@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aarav &amp; Meera – Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --maroon:#5e0f1e; --vermilion:#a3162a; --marigold:#e8a317; --gold:#b8872b;
+  --ivory:#fbf3e2; --leaf:#2f4a3a; --ink:#3a1a1a;
+  --display:"Rozha One","Noto Serif Devanagari",Georgia,serif;
+  --body:"Cormorant Garamond",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--ink);font-family:var(--body);font-size:1.2rem;line-height:1.6;text-align:center;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+a{color:var(--vermilion)}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;color:var(--maroon);line-height:1.15}
+section{padding:4.5rem 1.25rem}
+.wrap{max-width:34rem;margin:0 auto}
+
+/* garland strip: marigold + vermilion beads */
+.garland{height:14px;background:
+  radial-gradient(circle at 10px 7px,var(--marigold) 5px,transparent 6px) 0 0/20px 14px,
+  radial-gradient(circle at 20px 7px,var(--vermilion) 4px,transparent 5px) 0 0/20px 14px}
+.rule{display:flex;align-items:center;gap:.75rem;justify-content:center;margin:1.25rem auto;color:var(--gold)}
+.rule::before,.rule::after{content:"";height:1px;width:3.5rem;background:var(--gold)}
+.rule i{width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}
+
+/* ---------- Door cover (the one memorable moment) ---------- */
+.cover{position:fixed;inset:0;z-index:50;display:flex;transition:opacity .4s ease 1.3s}
+.cover.gone{opacity:0;pointer-events:none}
+.door{flex:1;background:var(--maroon);position:relative;transition:transform 1.5s cubic-bezier(.7,0,.2,1)}
+.door::before{content:"";position:absolute;inset:14px;border:2px solid var(--gold);
+  background:repeating-linear-gradient(45deg,transparent 0 22px,rgba(232,163,23,.14) 22px 23px),
+             repeating-linear-gradient(-45deg,transparent 0 22px,rgba(232,163,23,.14) 22px 23px)}
+.door.l::before{border-right-width:1px;border-radius:0 0 0 0}
+.door.r::before{border-left-width:1px}
+.cover.open .l{transform:translateX(-101%)}
+.cover.open .r{transform:translateX(101%)}
+.seal{position:absolute;inset:0;margin:auto;width:11rem;height:11rem;border-radius:50%;z-index:2;border:3px solid var(--gold);
+  background:var(--maroon);color:var(--marigold);font-family:var(--display);font-size:1.15rem;line-height:1.3;cursor:pointer;
+  box-shadow:0 0 0 8px var(--maroon),0 0 0 10px var(--gold);transition:opacity .3s}
+.seal span{display:block;font-size:2.6rem;line-height:1}
+.cover.open .seal{opacity:0}
+
+/* ---------- Hero ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;background:
+  radial-gradient(ellipse at 50% 0,rgba(232,163,23,.25),transparent 60%),var(--ivory)}
+.om{font-family:var(--display);color:var(--vermilion);font-size:1.3rem}
+.hero h1{font-size:clamp(3.5rem,17vw,6.5rem);margin:.5rem 0}
+.hero .weds{font-style:italic;color:var(--gold);font-size:1.5rem}
+.hero .when{font-size:1.4rem;margin-top:1rem}
+.scrollhint{margin-top:2rem;color:var(--gold);font-size:.95rem}
+
+/* ---------- Blessings ---------- */
+.blessing{background:var(--maroon);color:var(--ivory)}
+.blessing h2{color:var(--marigold);font-size:1.6rem}
+.blessing p{margin:.5rem 0}
+.blessing .names{font-family:var(--display);font-size:1.7rem;color:var(--ivory);margin:1rem 0}
+.blessing small{display:block;font-size:1.05rem;opacity:.85;font-style:italic}
+
+/* ---------- Events ---------- */
+.events h2,.gallery h2,.know h2,.countdown h2{font-size:2rem}
+.track{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:1.5rem 1.25rem 2rem;margin-top:1rem;-webkit-overflow-scrolling:touch}
+.card{flex:0 0 min(78vw,17rem);scroll-snap-align:center;background:#fff9ec;border:2px solid var(--gold);border-radius:999px 999px 8px 8px;padding:2.5rem 1.25rem 1.5rem;box-shadow:inset 0 0 0 5px var(--ivory),inset 0 0 0 6px var(--gold)}
+.card .dev{font-family:var(--display);font-size:2.4rem;color:var(--vermilion);line-height:1.1}
+.card h3{font-size:1.2rem;letter-spacing:.04em;margin:.25rem 0 1rem;color:var(--gold)}
+.card p{line-height:1.4;margin:.2rem 0}
+.card a{display:inline-block;margin-top:1rem;padding:.4rem 1.1rem;border:1px solid var(--vermilion);border-radius:99px;text-decoration:none;font-size:1.05rem}
+.card a:hover{background:var(--vermilion);color:var(--ivory)}
+
+/* ---------- Message ---------- */
+.message{background:#f5e6c8}
+.message p{font-style:italic;font-size:1.3rem}
+
+/* ---------- Gallery ---------- */
+.shot{flex:0 0 min(70vw,15rem);aspect-ratio:3/4;scroll-snap-align:center;border:2px solid var(--gold);border-radius:120px 120px 6px 6px;overflow:hidden;
+  background:linear-gradient(160deg,#f1d9a4,#e3b25e);display:grid;place-items:center;color:var(--maroon);font-size:1rem}
+.shot img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- RSVP ---------- */
+.rsvp{background:var(--leaf);color:var(--ivory)}
+.rsvp h2{color:var(--marigold);font-size:2rem}
+.btn{display:inline-block;margin-top:1.5rem;padding:.8rem 2rem;background:var(--marigold);color:var(--maroon);font-family:var(--display);font-size:1.15rem;border-radius:99px;text-decoration:none}
+.btn:hover{background:#f5b93a}
+
+/* ---------- Things to know ---------- */
+.know dl{text-align:left;margin-top:1.5rem}
+.know dt{font-family:var(--display);color:var(--vermilion);font-size:1.2rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--gold)}
+.know dt:first-child{border:0;padding:0;margin-top:0}
+.know dd{margin:0}
+
+/* ---------- Countdown ---------- */
+.countdown{background:var(--maroon);color:var(--ivory)}
+.countdown h2{color:var(--marigold)}
+.clock{display:flex;justify-content:center;gap:.9rem;margin-top:1.5rem}
+.clock div{min-width:4.2rem}
+.clock b{display:block;font-family:var(--display);font-weight:400;font-size:2.6rem;color:var(--marigold);line-height:1}
+.clock span{font-size:.95rem;opacity:.85}
+footer{padding:2rem 1rem;font-size:1rem;color:var(--gold)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .door,.cover{transition-duration:.01s;transition-delay:0s}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- Opening doors -->
+<div class="cover" id="cover">
+  <div class="door l"></div><div class="door r"></div>
+  <button class="seal" id="seal" aria-label="Open the invitation"><span>ॐ</span>Open the<br>invitation</button>
+</div>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="om">ॐ श्री गणेशाय नमः</p>
+      <h1 id="groom">Aarav</h1>
+      <p class="weds">weds</p>
+      <h1 id="bride">Meera</h1>
+      <div class="rule"><i></i></div>
+      <p class="when" id="whenText"></p>
+      <p class="scrollhint">Scroll down for the celebrations</p>
+    </div>
+  </section>
+  <div class="garland"></div>
+
+  <section class="blessing">
+    <div class="wrap">
+      <h2>With the blessings of</h2>
+      <p class="names">Late Smt. Sharda Devi &amp; Late Shri Mohan Lal</p>
+      <div class="rule"><i></i></div>
+      <p class="names">Smt. Sunita &amp; Shri Rakesh Sharma</p>
+      <small>Parents of the groom</small>
+      <p style="margin-top:2rem">invite you to join us in the wedding celebrations of</p>
+      <p class="names" style="color:var(--marigold)">Aarav &amp; Meera</p>
+      <small>Daughter of Smt. Kavita &amp; Shri Anil Verma</small>
+    </div>
+  </section>
+
+  <section class="events" id="events">
+    <h2>The celebrations</h2>
+    <div class="rule"><i></i></div>
+    <p>Swipe to see every function</p>
+    <div class="track" id="eventTrack" tabindex="0" aria-label="Events"></div>
+  </section>
+
+  <section class="message">
+    <div class="wrap">
+      <h2>A message from us</h2>
+      <div class="rule"><i></i></div>
+      <p>We are so happy that you will be with us on one of the happiest days of our lives. Your love and blessings have touched us deeply, and we look forward to celebrating together.</p>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <h2>Our moments</h2>
+    <div class="rule"><i></i></div>
+    <div class="track" id="photoTrack" tabindex="0" aria-label="Photo gallery"></div>
+  </section>
+
+  <section class="rsvp">
+    <div class="wrap">
+      <h2>Will you join us?</h2>
+      <p>Let us know on WhatsApp so we can plan your welcome.</p>
+      <a class="btn" id="rsvpBtn" href="#">RSVP on WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="know">
+    <div class="wrap">
+      <h2>Things to know</h2>
+      <div class="rule"><i></i></div>
+      <dl>
+        <dt>Hashtag</dt><dd>Please use #AaravWedsMeera when posting photos.</dd>
+        <dt>Weather</dt><dd>Mild days and cool evenings. Carry a light shawl.</dd>
+        <dt>Stay</dt><dd>Rooms are held for family at the venue hotel. Others may book nearby.</dd>
+        <dt>Parking</dt><dd>Valet parking is available for all guests.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="countdown">
+    <div class="wrap">
+      <h2>Counting down to the big day</h2>
+      <div class="clock" id="clock" aria-live="off">
+        <div><b id="d">00</b><span>days</span></div>
+        <div><b id="h">00</b><span>hours</span></div>
+        <div><b id="m">00</b><span>minutes</span></div>
+        <div><b id="s">00</b><span>seconds</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="garland"></div>
+  <footer>Made with love. Replace the text in the CONFIG block to make it yours.</footer>
+</main>
+
+<script>
+/* ===== CONFIG: edit everything here ===== */
+const CONFIG = {
+  weddingDate: "2027-02-14T18:00:00+05:30", // countdown target
+  whenText: "Sunday, 14 February 2027",
+  whatsapp: "919999999999",                  // country code + number, no + or spaces
+  rsvpText: "Hello! I would like to RSVP for the wedding.",
+  photos: [],                                // e.g. ["img/1.jpg","img/2.jpg"]; empty shows placeholders
+  events: [
+    {dev:"मेहंदी",  name:"Mehendi",   date:"Friday, 12 February",   time:"4:00 PM onwards", venue:"Your venue name, City"},
+    {dev:"हल्दी",   name:"Haldi",     date:"Saturday, 13 February", time:"10:00 AM onwards", venue:"Your venue name, City"},
+    {dev:"संगीत",  name:"Sangeet",   date:"Saturday, 13 February", time:"7:00 PM onwards", venue:"Your venue name, City"},
+    {dev:"शादी",   name:"Shaadi",    date:"Sunday, 14 February",   time:"6:00 PM onwards", venue:"Your venue name, City"},
+    {dev:"स्वागत", name:"Reception", date:"Monday, 15 February",   time:"7:30 PM onwards", venue:"Your venue name, City"}
+  ]
+};
+/* ======================================== */
+
+const $ = id => document.getElementById(id);
+$("whenText").textContent = CONFIG.whenText;
+$("rsvpBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(CONFIG.rsvpText);
+
+$("eventTrack").innerHTML = CONFIG.events.map(e => `
+  <article class="card">
+    <div class="dev">${e.dev}</div>
+    <h3>${e.name}</h3>
+    <p>${e.date}</p><p>${e.time}</p><p>${e.venue}</p>
+    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.venue)}" target="_blank" rel="noopener">See the route</a>
+  </article>`).join("");
+
+const photos = CONFIG.photos.length ? CONFIG.photos : Array(6).fill(null);
+$("photoTrack").innerHTML = photos.map(p =>
+  `<div class="shot">${p ? `<img src="${p}" alt="The couple" loading="lazy">` : "Your photo here"}</div>`).join("");
+
+// Opening doors
+$("seal").addEventListener("click", () => {
+  $("cover").classList.add("open");
+  document.body.classList.remove("locked");
+  setTimeout(() => $("cover").classList.add("gone"), 100);
+});
+
+// Countdown
+const pad = n => String(n).padStart(2, "0");
+function tick(){
+  let t = Math.max(0, new Date(CONFIG.weddingDate) - new Date()) / 1000;
+  $("d").textContent = pad(Math.floor(t / 86400));
+  $("h").textContent = pad(Math.floor(t % 86400 / 3600));
+  $("m").textContent = pad(Math.floor(t % 3600 / 60));
+  $("s").textContent = pad(Math.floor(t % 60));
+}
+tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
