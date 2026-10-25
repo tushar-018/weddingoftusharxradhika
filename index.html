@@ -114,6 +114,10 @@ section{padding:4.5rem 1.25rem}
 .clock span{font-size:.95rem;opacity:.85}
 footer{padding:2rem 1rem;font-size:1rem;color:var(--gold)}
 
+/* ---------- Music toggle ---------- */
+.mute{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:40;width:3rem;height:3rem;border-radius:50%;border:2px solid var(--gold);background:var(--maroon);color:var(--marigold);font-size:1.3rem;line-height:1;cursor:pointer;display:none}
+.mute.show{display:block}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .door,.cover{transition-duration:.01s;transition-delay:0s}
@@ -127,6 +131,8 @@ footer{padding:2rem 1rem;font-size:1rem;color:var(--gold)}
   <div class="door l"></div><div class="door r"></div>
   <button class="seal" id="seal" aria-label="Open the invitation"><span>ॐ</span>Open the<br>invitation</button>
 </div>
+
+<button class="mute" id="mute" aria-label="Mute music" aria-pressed="false">🔊</button>
 
 <main>
   <section class="hero">
@@ -218,6 +224,7 @@ const CONFIG = {
   weddingDate: "2026-12-04T18:00:00+05:30", // countdown target
   whenText: "Friday, 4 December 2026",
   scratchCards: true,                        // false = show event details openly (or add scratch:false to one event)
+  music: "audio/music.mp3",
   whatsapp: "919999999999",                  // country code + number, no + or spaces
   rsvpText: "Hello! I would like to RSVP for the wedding.",
   photos: [],                                // e.g. ["img/1.jpg","img/2.jpg"]; empty shows placeholders
@@ -347,7 +354,26 @@ if (CONFIG.scratchCards){
 }
 
 // Opening doors
+// Background music: starts on the same tap that opens the doors (browsers only allow sound after a tap)
+const music = CONFIG.music ? new Audio(CONFIG.music) : null;
+if (music){ music.loop = true; music.volume = .7; music.preload = "auto"; }
+let muted = false, started = false;
+function setMuted(m){
+  muted = m;
+  if (!music) return;
+  m ? music.pause() : music.play().catch(() => {});
+  $("mute").textContent = m ? "🔇" : "🔊";
+  $("mute").setAttribute("aria-pressed", String(m));
+  $("mute").setAttribute("aria-label", m ? "Play music" : "Mute music");
+}
+$("mute").addEventListener("click", () => setMuted(!muted));
+document.addEventListener("visibilitychange", () => {   // pause when the tab/app is hidden
+  if (!music || !started || muted) return;
+  document.hidden ? music.pause() : music.play().catch(() => {});
+});
+
 $("seal").addEventListener("click", () => {
+  if (music){ started = true; music.play().catch(() => {}); $("mute").classList.add("show"); }
   $("cover").classList.add("open");
   document.body.classList.remove("locked");
   setTimeout(() => $("cover").classList.add("gone"), 100);
